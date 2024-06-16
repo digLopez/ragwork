@@ -21,10 +21,14 @@ def emb_add_documents(documents: list[str]):
 
 
 def emb_query(tex: list[str], result_num: int):
-    results = collection.query(
-        query_texts=tex,
-        n_results=result_num
-    )
+    try:
+        results = collection.query(
+            query_texts=tex,
+            n_results=result_num
+        )
+    except Exception as e:
+        return {"error": str(e)}
+
     return results
 
 
