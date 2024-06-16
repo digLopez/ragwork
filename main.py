@@ -27,7 +27,11 @@ emb_chroma.emb_add_documents(documents)
 
 @app.post("/query/")
 def post_items(query: Query):
+    if not query.question:
+        return {"error": "error question: %s" % query.question}
     results = emb_chroma.emb_query([query.question], 10)
+    if "documents" not in results:
+        return results
     chunks = results["documents"]
     answer = ask_llm(chunks, query.question[0])
     return {"answer": answer}
